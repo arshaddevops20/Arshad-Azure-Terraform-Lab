@@ -1,0 +1,19 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# Variables
+terraform.tfvars
+
+# SSH Keys
+*.pem
+*.key
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+crash.log
