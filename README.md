@@ -251,7 +251,7 @@ After completing this lab, you will understand:
 
 Azure | Terraform | DevOps Engineer
 
-GitHub: https://github.com/arshadmca2014
+GitHub: https://github.com/arshaddevops20
 
 ```
 ```
