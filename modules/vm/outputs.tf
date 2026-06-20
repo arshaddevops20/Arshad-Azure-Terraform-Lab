@@ -6,6 +6,14 @@
 #   value = azurerm_public_ip.backend_pip.ip_address
 # }
 
+output "frontend_nic_id" {
+  value = azurerm_network_interface.frontend_nic.id
+}
+
+output "backend_nic_id" {
+  value = azurerm_network_interface.backend_nic.id
+}
+
 output "frontend_vm_name" {
   value = azurerm_linux_virtual_machine.frontend_vm.name
 }
@@ -18,3 +26,6 @@ output "private_key_pem" {
   sensitive = true
   value     = tls_private_key.ssh_key.private_key_pem
 }
+
+
+

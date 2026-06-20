@@ -24,3 +24,13 @@ module "bastion" {
 
   bastion_subnet_id = module.network.bastion_subnet_id
 }
+
+module "loadbalancer" {
+  source = "./modules/loadbalancer"
+
+  prefix              = "arshad"
+  location            = var.location
+  resource_group_name = module.network.resource_group_name
+
+  nic_id = module.vm.frontend_nic_id
+}
