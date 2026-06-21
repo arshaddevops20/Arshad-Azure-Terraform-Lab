@@ -1,23 +1,33 @@
 # 🚀 Arshad Azure Terraform Lab
 
-## 📖 Overview
+![Terraform](https://img.shields.io/badge/Terraform-IaC-623CE4?logo=terraform)
+![Azure](https://img.shields.io/badge/Azure-Cloud-0078D4?logo=microsoftazure)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI/CD-2088FF?logo=githubactions)
+![Security](https://img.shields.io/badge/Security-Trivy%20%7C%20Checkov-success)
+
+## 📖 Project Overview
 
 This project demonstrates Infrastructure as Code (IaC) using Terraform and Microsoft Azure.
 
-The infrastructure is built using reusable Terraform modules and validated through GitHub Actions CI workflows.
+The infrastructure is designed using reusable Terraform modules and validated through GitHub Actions CI/CD pipelines with integrated security scanning and Azure OIDC authentication.
 
-### Key Components
+---
 
+## ✨ Features
+
+* Modular Terraform Architecture
 * Azure Resource Group
-* Virtual Networks (Prod & Dev)
-* Subnets
-* Network Security Groups (NSG)
-* Azure Virtual Machines
+* Virtual Networks (Production & Development)
+* Subnets & Network Security Groups
+* Azure Linux Virtual Machines
 * Azure Load Balancer
-* Azure Bastion
+* Azure Bastion Host
 * VNet Peering
-* GitHub Actions CI Pipeline
-* Infrastructure as Code (Terraform)
+* GitHub Actions CI/CD
+* OIDC Authentication
+* Trivy Security Scanning
+* Checkov Terraform Security Validation
+* Infrastructure as Code Best Practices
 
 ---
 
@@ -49,7 +59,7 @@ VNet Peering
 
 ---
 
-## 📂 Project Structure
+## 📂 Repository Structure
 
 ```text
 Arshad-Azure-Terraform-Lab/
@@ -58,9 +68,10 @@ Arshad-Azure-Terraform-Lab/
 │   └── workflows/
 │       ├── azure-login-test.yml
 │       ├── terraform-init.yml
-│       ├── terraform-plan.yml
 │       ├── terraform-validate.yml
-│       └── security.yml
+│       ├── terraform-plan.yml
+│       ├── security.yml
+│       └── checkov.yml
 │
 ├── modules/
 │   ├── network/
@@ -79,47 +90,31 @@ Arshad-Azure-Terraform-Lab/
 
 ---
 
-## 🛠️ Technologies Used
+## 🔄 GitHub Actions Workflows
 
-* Terraform
-* Microsoft Azure
-* Azure Virtual Network
-* Azure Virtual Machines
-* Azure Load Balancer
-* Azure Bastion
-* GitHub Actions
-* Azure CLI
-* Nginx
+| Workflow            | Purpose                                    |
+| ------------------- | ------------------------------------------ |
+| Terraform Init      | Initialize Terraform modules and providers |
+| Terraform Validate  | Validate Terraform configuration           |
+| Terraform Plan      | Preview infrastructure changes             |
+| Azure Login Test    | Test Azure OIDC authentication             |
+| Trivy Security Scan | Filesystem security scanning               |
+| Checkov Scan        | Terraform security & compliance checks     |
 
----
+### CI/CD Benefits
 
-## 🔄 GitHub Actions CI/CD
-
-This repository includes GitHub Actions workflows for Terraform automation.
-
-### Available Workflows
-
-| Workflow           | Purpose                                    |
-| ------------------ | ------------------------------------------ |
-| Terraform Init     | Initialize Terraform modules and providers |
-| Terraform Validate | Validate Terraform configuration           |
-| Terraform Plan     | Preview infrastructure changes             |
-| Azure Login Test   | Test Azure OIDC authentication             |
-| Security Scan      | Infrastructure security checks             |
-
-### Benefits
-
-* Automated Terraform validation
-* Infrastructure consistency
-* CI pipeline integration
-* DevOps best practices
-* Reusable Infrastructure as Code
+* Automated Validation
+* Infrastructure Consistency
+* Security Scanning
+* Shift Left Security
+* DevOps Best Practices
+* Reusable Infrastructure
 
 ---
 
-## 🔐 Azure Authentication
+## 🔐 Azure OIDC Authentication
 
-This project supports GitHub Actions OIDC authentication with Microsoft Entra ID.
+This project uses GitHub Actions OpenID Connect (OIDC) authentication with Microsoft Entra ID.
 
 Required GitHub Secrets:
 
@@ -129,17 +124,50 @@ AZURE_TENANT_ID
 AZURE_SUBSCRIPTION_ID
 ```
 
+Benefits:
+
+* No Client Secret Required
+* Secure Authentication
+* Short-Lived Tokens
+* Industry Best Practice
+
+---
+
+## 🛠️ Technologies Used
+
+### Cloud
+
+* Microsoft Azure
+* Azure Virtual Network
+* Azure Bastion
+* Azure Load Balancer
+* Azure Virtual Machines
+
+### Infrastructure as Code
+
+* Terraform
+* Terraform Modules
+
+### DevOps
+
+* GitHub Actions
+* Azure CLI
+* Git
+
+### Security
+
+* Trivy
+* Checkov
+
+### Web Server
+
+* Nginx
+
 ---
 
 ## 📋 Prerequisites
 
-Install the following tools:
-
-* Terraform
-* Azure CLI
-* Git
-
-Verify installation:
+Install the following:
 
 ```bash
 terraform version
@@ -147,15 +175,23 @@ az version
 git --version
 ```
 
+Required Tools:
+
+* Terraform
+* Azure CLI
+* Git
+
 ---
 
-## 🔑 Azure Login
+## 🔑 Azure Authentication
+
+Login:
 
 ```bash
 az login
 ```
 
-Set subscription:
+Select Subscription:
 
 ```bash
 az account set --subscription <subscription-id>
@@ -187,27 +223,27 @@ vm_size        = "Standard_D2s_v7"
 
 ---
 
-## 🚀 Deployment
+## 🚀 Deployment Steps
 
-Initialize:
+### Initialize
 
 ```bash
 terraform init
 ```
 
-Validate:
+### Validate
 
 ```bash
 terraform validate
 ```
 
-Review changes:
+### Review Changes
 
 ```bash
 terraform plan
 ```
 
-Deploy:
+### Deploy Infrastructure
 
 ```bash
 terraform apply -auto-approve
@@ -215,27 +251,27 @@ terraform apply -auto-approve
 
 ---
 
-## 🌐 Infrastructure Verification
+## 🌐 Verification
 
-List resources:
+### List Azure Resources
 
 ```bash
 az resource list -g arshad-rg-network-lab -o table
 ```
 
-List VMs:
+### List Virtual Machines
 
 ```bash
 az vm list -g arshad-rg-network-lab -o table
 ```
 
-List Load Balancers:
+### List Load Balancers
 
 ```bash
 az network lb list -g arshad-rg-network-lab -o table
 ```
 
-List Bastion Hosts:
+### List Bastion Hosts
 
 ```bash
 az network bastion list -g arshad-rg-network-lab -o table
@@ -247,11 +283,34 @@ az network bastion list -g arshad-rg-network-lab -o table
 
 * Private VM Architecture
 * Azure Bastion Access
-* NSG-based Traffic Control
+* SSH Key Authentication
+* NSG Controlled Access
 * Load Balancer Frontend Exposure
-* Infrastructure as Code
-* GitHub Actions Validation
-* OIDC Authentication Support
+* OIDC Authentication
+* Trivy Security Scanning
+* Checkov Compliance Validation
+
+---
+
+## 📊 Security Scanning
+
+### Trivy
+
+Scans:
+
+* Secrets
+* Terraform Files
+* Configuration Issues
+* Vulnerabilities
+
+### Checkov
+
+Validates:
+
+* Azure Security Best Practices
+* NSG Rules
+* Networking Policies
+* Infrastructure Compliance
 
 ---
 
@@ -269,17 +328,20 @@ terraform destroy -auto-approve
 
 * Terraform Providers
 * Variables & Outputs
-* Terraform Modules
-* Azure Resource Groups
-* VNets & Subnets
+* Modules
+* Resource Groups
+* Virtual Networks
+* Subnets
 * Network Security Groups
-* Azure Virtual Machines
 * Azure Bastion
 * Azure Load Balancer
+* Virtual Machines
 * VNet Peering
-* Terraform State Management
+* Terraform State
 * GitHub Actions
 * OIDC Authentication
+* Trivy Security Scanning
+* Checkov Security Validation
 
 ---
 
@@ -288,14 +350,15 @@ terraform destroy -auto-approve
 After completing this project, you will understand:
 
 * Azure Networking Fundamentals
-* Infrastructure as Code
+* Infrastructure as Code (IaC)
 * Terraform Module Design
 * Azure Load Balancer Architecture
 * Azure Bastion Connectivity
 * VNet Peering
 * GitHub Actions Automation
 * OIDC Authentication
-* DevOps CI/CD Practices
+* Security Scanning in CI/CD
+* DevOps Best Practices
 
 ---
 
