@@ -1,0 +1,14 @@
+streamlit
+langchain
+langgraph
+langchain-community
+langchain-ollama
+chromadb
+python-dotenv
+GitPython
+PyGithub
+azure-identity
+azure-mgmt-resource
+azure-mgmt-compute
+azure-mgmt-network
+checkov
