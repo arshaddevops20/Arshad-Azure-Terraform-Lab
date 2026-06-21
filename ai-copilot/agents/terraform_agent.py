@@ -1,31 +1,40 @@
 from langchain_ollama import ChatOllama
-from tools.terraform_tools import read_terraform
+
+from tools.terraform_tools import get_terraform_content
 
 llm = ChatOllama(
-    model="qwen3:4b"
+    model="qwen3:4b",
+    temperature=0
 )
 
 def review_terraform(repo_path):
 
-    terraform_code = read_terraform(repo_path)
+    terraform_code = get_terraform_content(repo_path)
 
     prompt = f"""
 You are a Senior Azure Terraform Architect.
 
-Analyze the following Terraform code.
+Analyze this repository.
 
 Provide:
 
 1. Architecture Summary
-2. Security Findings
-3. Best Practice Findings
-4. Recommendations
 
-Terraform Code:
+2. Azure Resources
+
+3. Security Review
+
+4. Terraform Best Practices
+
+5. Cost Optimization Suggestions
+
+6. Improvement Recommendations
+
+Repository:
 
 {terraform_code}
 """
 
-    response = llm.invoke(prompt)
+    result = llm.invoke(prompt)
 
-    return response.content
+    return result.content

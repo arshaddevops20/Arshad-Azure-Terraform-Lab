@@ -1,25 +1,32 @@
 import os
 
-def get_tf_files(repo_path):
-    tf_files = []
+def get_terraform_content(repo_path: str):
 
-    for root, _, files in os.walk(repo_path):
+    terraform_content = ""
+
+    for root, dirs, files in os.walk(repo_path):
+
+        if ".terraform" in root:
+            continue
+
+        if "ai-copilot" in root:
+            continue
+
         for file in files:
+
             if file.endswith(".tf"):
-                tf_files.append(os.path.join(root, file))
 
-    return tf_files
+                path = os.path.join(root, file)
 
+                try:
 
-def read_terraform(repo_path):
-    content = ""
+                    with open(path, "r", encoding="utf-8") as f:
 
-    for file in get_tf_files(repo_path):
-        try:
-            with open(file, "r", encoding="utf-8") as f:
-                content += f"\n\n### FILE: {file}\n"
-                content += f.read()
-        except Exception as e:
-            content += f"\nError reading {file}: {str(e)}"
+                        terraform_content += f"\n\n### FILE: {path}\n"
+                        terraform_content += f.read()
 
-    return content
+                except Exception as ex:
+
+                    terraform_content += f"\nERROR: {ex}"
+
+    return terraform_content

@@ -1,26 +1,27 @@
 import streamlit as st
-from agents.orchestrator import route_request
 
-REPO_PATH = "../"
+from agents.orchestrator import run_agent
+
+REPO_PATH = r"D:\DevOps Batch 18\Arshad-Azure-Terraform-Lab"
 
 st.set_page_config(
-    page_title="Arshad Terraform Copilot",
+    page_title="Arshad AI Copilot",
     layout="wide"
 )
 
 st.title("🚀 Arshad Azure Terraform AI Copilot")
 
 question = st.text_input(
-    "Ask a question"
+    "Ask your DevOps Agent"
 )
 
 if st.button("Run"):
 
-    with st.spinner("Analyzing Terraform..."):
+    with st.spinner("Analyzing..."):
 
-        result = route_request(
+        result = run_agent(
             question,
             REPO_PATH
         )
 
-        st.markdown(result)
+        st.code(result)
