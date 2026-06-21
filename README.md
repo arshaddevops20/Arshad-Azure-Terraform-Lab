@@ -1,24 +1,27 @@
 # 🚀 Arshad Azure Terraform Lab
 
-## 📌 Project Overview
+## 📖 Overview
 
-This project demonstrates Infrastructure as Code (IaC) using Terraform on Microsoft Azure.
+This project demonstrates Infrastructure as Code (IaC) using Terraform and Microsoft Azure.
 
-The lab includes:
+The infrastructure is built using reusable Terraform modules and validated through GitHub Actions CI workflows.
 
-* Resource Group
+### Key Components
+
+* Azure Resource Group
 * Virtual Networks (Prod & Dev)
 * Subnets
-* Network Security Group (NSG)
+* Network Security Groups (NSG)
 * Azure Virtual Machines
 * Azure Load Balancer
-* VNet Peering
 * Azure Bastion
-* Private Networking Architecture
+* VNet Peering
+* GitHub Actions CI Pipeline
+* Infrastructure as Code (Terraform)
 
 ---
 
-# 🏗️ Architecture
+## 🏗️ Architecture
 
 ```text
 Internet
@@ -46,33 +49,37 @@ VNet Peering
 
 ---
 
-# 📂 Folder Structure
+## 📂 Project Structure
 
 ```text
 Arshad-Azure-Terraform-Lab/
 │
-├── provider.tf
-├── variables.tf
-├── terraform.tfvars.example
-├── main.tf
-├── outputs.tf
+├── .github/
+│   └── workflows/
+│       ├── azure-login-test.yml
+│       ├── terraform-init.yml
+│       ├── terraform-plan.yml
+│       ├── terraform-validate.yml
+│       └── security.yml
 │
 ├── modules/
 │   ├── network/
 │   ├── vm/
 │   ├── bastion/
 │   └── loadbalancer/
-│       ├── main.tf
-│       ├── variables.tf
-│       └── outputs.tf
 │
-├── .gitignore
-└── README.md
+├── provider.tf
+├── variables.tf
+├── main.tf
+├── outputs.tf
+├── terraform.tfvars.example
+├── README.md
+└── .gitignore
 ```
 
 ---
 
-# 🔧 Technologies Used
+## 🛠️ Technologies Used
 
 * Terraform
 * Microsoft Azure
@@ -80,22 +87,59 @@ Arshad-Azure-Terraform-Lab/
 * Azure Virtual Machines
 * Azure Load Balancer
 * Azure Bastion
-* Network Security Groups
-* VNet Peering
+* GitHub Actions
+* Azure CLI
 * Nginx
 
 ---
 
-# 📋 Prerequisites
+## 🔄 GitHub Actions CI/CD
 
-Install:
+This repository includes GitHub Actions workflows for Terraform automation.
+
+### Available Workflows
+
+| Workflow           | Purpose                                    |
+| ------------------ | ------------------------------------------ |
+| Terraform Init     | Initialize Terraform modules and providers |
+| Terraform Validate | Validate Terraform configuration           |
+| Terraform Plan     | Preview infrastructure changes             |
+| Azure Login Test   | Test Azure OIDC authentication             |
+| Security Scan      | Infrastructure security checks             |
+
+### Benefits
+
+* Automated Terraform validation
+* Infrastructure consistency
+* CI pipeline integration
+* DevOps best practices
+* Reusable Infrastructure as Code
+
+---
+
+## 🔐 Azure Authentication
+
+This project supports GitHub Actions OIDC authentication with Microsoft Entra ID.
+
+Required GitHub Secrets:
+
+```text
+AZURE_CLIENT_ID
+AZURE_TENANT_ID
+AZURE_SUBSCRIPTION_ID
+```
+
+---
+
+## 📋 Prerequisites
+
+Install the following tools:
 
 * Terraform
 * Azure CLI
 * Git
-* Azure Subscription
 
-Verify:
+Verify installation:
 
 ```bash
 terraform version
@@ -105,13 +149,13 @@ git --version
 
 ---
 
-# 🔑 Azure Login
+## 🔑 Azure Login
 
 ```bash
 az login
 ```
 
-Set Subscription:
+Set subscription:
 
 ```bash
 az account set --subscription <subscription-id>
@@ -125,7 +169,7 @@ az account show
 
 ---
 
-# ⚙️ Terraform Configuration
+## ⚙️ Terraform Configuration
 
 Create:
 
@@ -143,7 +187,7 @@ vm_size        = "Standard_D2s_v7"
 
 ---
 
-# 🚀 Deployment Steps
+## 🚀 Deployment
 
 Initialize:
 
@@ -157,13 +201,13 @@ Validate:
 terraform validate
 ```
 
-Plan:
+Review changes:
 
 ```bash
 terraform plan
 ```
 
-Apply:
+Deploy:
 
 ```bash
 terraform apply -auto-approve
@@ -171,41 +215,27 @@ terraform apply -auto-approve
 
 ---
 
-# 🌐 Load Balancer Verification
+## 🌐 Infrastructure Verification
 
-Get Load Balancer Public IP:
-
-```bash
-terraform output lb_public_ip
-```
-
-Open:
-
-```text
-http://<LOAD_BALANCER_PUBLIC_IP>
-```
-
-Expected Result:
-
-* Nginx default page is displayed.
-* Traffic is routed through Azure Load Balancer.
-* Backend pool contains Frontend VM.
-
----
-
-# 📊 Verify Resources
+List resources:
 
 ```bash
 az resource list -g arshad-rg-network-lab -o table
 ```
 
+List VMs:
+
 ```bash
 az vm list -g arshad-rg-network-lab -o table
 ```
 
+List Load Balancers:
+
 ```bash
 az network lb list -g arshad-rg-network-lab -o table
 ```
+
+List Bastion Hosts:
 
 ```bash
 az network bastion list -g arshad-rg-network-lab -o table
@@ -213,18 +243,21 @@ az network bastion list -g arshad-rg-network-lab -o table
 
 ---
 
-# 🔒 Security Features
+## 🔒 Security Features
 
-* No Public IP on Virtual Machines
-* SSH Access through Azure Bastion
-* NSG Controlled Traffic
-* HTTP Access through Azure Load Balancer
-* Private Network Communication
+* Private VM Architecture
+* Azure Bastion Access
+* NSG-based Traffic Control
+* Load Balancer Frontend Exposure
 * Infrastructure as Code
+* GitHub Actions Validation
+* OIDC Authentication Support
 
 ---
 
-# 🧹 Destroy Resources
+## 🧹 Cleanup
+
+Destroy all resources:
 
 ```bash
 terraform destroy -auto-approve
@@ -232,41 +265,41 @@ terraform destroy -auto-approve
 
 ---
 
-# 📚 Terraform Concepts Covered
+## 📚 Concepts Covered
 
-* Providers
-* Variables
-* Outputs
-* Modules
-* Resource Groups
-* VNets
-* Subnets
-* NSGs
-* NICs
-* Azure Load Balancer
+* Terraform Providers
+* Variables & Outputs
+* Terraform Modules
+* Azure Resource Groups
+* VNets & Subnets
+* Network Security Groups
+* Azure Virtual Machines
 * Azure Bastion
-* Virtual Machines
+* Azure Load Balancer
 * VNet Peering
-* Terraform State
+* Terraform State Management
+* GitHub Actions
+* OIDC Authentication
 
 ---
 
-# 🎯 Learning Outcome
+## 🎯 Learning Outcomes
 
-After completing this lab, you will understand:
+After completing this project, you will understand:
 
 * Azure Networking Fundamentals
 * Infrastructure as Code
 * Terraform Module Design
-* Azure Load Balancer
+* Azure Load Balancer Architecture
 * Azure Bastion Connectivity
 * VNet Peering
-* Secure VM Deployments
-* Real-world Azure Architecture
+* GitHub Actions Automation
+* OIDC Authentication
+* DevOps CI/CD Practices
 
 ---
 
-# 👨‍💻 Author
+## 👨‍💻 Author
 
 **Mohd Arshad**
 
