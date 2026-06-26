@@ -4,8 +4,8 @@
 *.tfstate.*
 .terraform.lock.hcl
 
-# Variables
-terraform.tfvars
+# # Variables
+# terraform.tfvars
 
 # SSH Keys
 *.pem
