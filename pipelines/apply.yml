@@ -1,14 +1,11 @@
 stages:
 - stage: Apply
-  displayName: "Terraform Apply"
-
+  displayName: Terraform Apply
   dependsOn: Plan
 
   jobs:
   - deployment: Apply
-
     displayName: Terraform Apply
-
     environment: Production
 
     pool:
@@ -17,7 +14,6 @@ stages:
     strategy:
       runOnce:
         deploy:
-
           steps:
 
           - checkout: self
@@ -26,10 +22,9 @@ stages:
             displayName: Download Terraform Plan
             inputs:
               artifact: tfplan
-              path: .
+              path: $(Pipeline.Workspace)
 
           - task: TerraformInstaller@1
-            displayName: Install Terraform
             inputs:
               terraformVersion: '1.14.0'
 
@@ -39,6 +34,14 @@ stages:
               azureSubscription: Azure-Service-Connection
               scriptType: bash
               scriptLocation: inlineScript
+              workingDirectory: $(Build.SourcesDirectory)
               inlineScript: |
+                echo "Current Directory"
+                pwd
+
+                echo "Pipeline Workspace"
+                ls -R $(Pipeline.Workspace)
+
                 terraform init
-                terraform apply -auto-approve tfplan
+
+                terraform apply -auto-approve $(Pipeline.Workspace)/tfplan/tfplan
