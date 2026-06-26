@@ -1,0 +1,33 @@
+trigger: none
+
+pr:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+
+- checkout: self
+
+- task: TerraformInstaller@1
+  inputs:
+    terraformVersion: '1.14.0'
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: Azure-Service-Connection
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+      terraform fmt -check -recursive
+      terraform init
+      terraform validate
+      terraform plan
+
+- script: |
+    pip install checkov
+    checkov -d .
+  displayName: Checkov Scan

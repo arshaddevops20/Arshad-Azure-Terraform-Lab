@@ -1,0 +1,35 @@
+stages:
+- stage: Destroy
+  displayName: "Terraform Destroy"
+
+  jobs:
+  - deployment: Destroy
+
+    displayName: Terraform Destroy
+
+    environment: Production
+
+    pool:
+      vmImage: ubuntu-latest
+
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          - checkout: self
+
+          - task: TerraformInstaller@1
+            displayName: Install Terraform
+            inputs:
+              terraformVersion: '1.14.0'
+
+          - task: AzureCLI@2
+            displayName: Terraform Destroy
+            inputs:
+              azureSubscription: Azure-Service-Connection
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                terraform init
+                terraform destroy -auto-approve
