@@ -4,16 +4,29 @@ on:
   push:
     branches:
       - main
+      - develop
+
+  pull_request:
+    branches:
+      - main
+      - develop
+
+permissions:
+  contents: read
 
 jobs:
-  scan:
+  checkov:
+    name: Checkov Scan
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - name: Run Checkov Scan
+      - name: Run Checkov
         uses: bridgecrewio/checkov-action@master
         with:
           directory: .
           framework: terraform
+          output_format: cli
+          soft_fail: false
