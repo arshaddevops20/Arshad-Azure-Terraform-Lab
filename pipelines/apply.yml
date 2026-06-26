@@ -1,11 +1,13 @@
 stages:
 - stage: Apply
-  displayName: Terraform Apply
+  displayName: "Terraform Apply"
+
   dependsOn: Plan
 
   jobs:
   - deployment: Apply
     displayName: Terraform Apply
+
     environment: Production
 
     pool:
@@ -21,10 +23,11 @@ stages:
           - task: DownloadPipelineArtifact@2
             displayName: Download Terraform Plan
             inputs:
-              artifact: tfplan
+              artifact: terraform-plan
               path: $(Pipeline.Workspace)
 
           - task: TerraformInstaller@1
+            displayName: Install Terraform
             inputs:
               terraformVersion: '1.14.0'
 
@@ -36,12 +39,8 @@ stages:
               scriptLocation: inlineScript
               workingDirectory: $(Build.SourcesDirectory)
               inlineScript: |
-                echo "Current Directory"
-                pwd
-
-                echo "Pipeline Workspace"
-                ls -R $(Pipeline.Workspace)
-
                 terraform init
 
-                terraform apply -auto-approve $(Pipeline.Workspace)/tfplan/tfplan
+                ls -R $(Pipeline.Workspace)
+
+                terraform apply -auto-approve $(Pipeline.Workspace)/terraform-plan/tfplan

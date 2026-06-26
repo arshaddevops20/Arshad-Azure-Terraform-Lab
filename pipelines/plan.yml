@@ -29,8 +29,11 @@ stages:
           terraform init
           terraform plan -out=tfplan
 
+          mkdir terraform-plan
+          mv tfplan terraform-plan/
+
     - task: PublishPipelineArtifact@1
       displayName: Publish Terraform Plan
       inputs:
-        targetPath: tfplan
-        artifact: tfplan
+        targetPath: terraform-plan
+        artifact: terraform-plan
