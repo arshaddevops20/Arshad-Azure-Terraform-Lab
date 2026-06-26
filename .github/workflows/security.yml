@@ -4,13 +4,26 @@ on:
   push:
     branches:
       - main
+  pull_request:
+
+permissions:
+  contents: read
 
 jobs:
-  scan:
+  trivy:
+    name: Trivy Filesystem Scan
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - name: Run Trivy Scan
+      - name: Run Trivy Filesystem Scan
         uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGH'
