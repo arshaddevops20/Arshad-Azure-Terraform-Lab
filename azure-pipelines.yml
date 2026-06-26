@@ -1,29 +1,10 @@
 trigger:
 - main
 
-pool:
-  vmImage: ubuntu-latest
+stages:
 
-variables:
-  terraformVersion: '1.14.0'
+- template: pipelines/validate.yml
 
-steps:
-- checkout: self
+- template: pipelines/plan.yml
 
-- task: TerraformInstaller@1
-  displayName: Install Terraform
-  inputs:
-    terraformVersion: $(terraformVersion)
-
-- script: terraform version
-  displayName: Verify Terraform Installation
-
-- task: AzureCLI@2
-  displayName: Terraform Init
-  inputs:
-    azureSubscription: 'Azure-Service-Connection'   # Replace with your service connection name
-    scriptType: bash
-    scriptLocation: inlineScript
-    inlineScript: |
-      terraform init
-      terraform validate
+- template: pipelines/apply.yml

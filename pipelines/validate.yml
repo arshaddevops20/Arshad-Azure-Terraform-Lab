@@ -1,0 +1,40 @@
+stages:
+- stage: Validate
+
+  jobs:
+  - job: Validate
+
+    pool:
+      vmImage: ubuntu-latest
+
+    variables:
+      terraformVersion: '1.14.0'
+
+    steps:
+
+    - checkout: self
+
+    - task: TerraformInstaller@1
+      inputs:
+        terraformVersion: $(terraformVersion)
+
+    - script: terraform fmt -check -recursive
+      displayName: Terraform Format Check
+
+    - task: AzureCLI@2
+      displayName: Terraform Init
+      inputs:
+        azureSubscription: Azure-Service-Connection
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+          terraform init
+
+    - task: AzureCLI@2
+      displayName: Terraform Validate
+      inputs:
+        azureSubscription: Azure-Service-Connection
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+          terraform validate

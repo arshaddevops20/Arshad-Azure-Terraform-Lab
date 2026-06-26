@@ -1,0 +1,42 @@
+stages:
+- stage: Apply
+
+  dependsOn: Plan
+
+  jobs:
+
+  - deployment: Apply
+
+    environment: Production
+
+    strategy:
+
+      runOnce:
+
+        deploy:
+
+          pool:
+            vmImage: ubuntu-latest
+
+          variables:
+            terraformVersion: '1.14.0'
+
+          steps:
+
+          - checkout: self
+
+          - download: current
+            artifact: tfplan
+
+          - task: TerraformInstaller@1
+            inputs:
+              terraformVersion: $(terraformVersion)
+
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: Azure-Service-Connection
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                terraform init
+                terraform apply -auto-approve tfplan
