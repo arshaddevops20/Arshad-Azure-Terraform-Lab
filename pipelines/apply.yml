@@ -1,38 +1,40 @@
 stages:
 - stage: Apply
+  displayName: "Terraform Apply"
 
   dependsOn: Plan
 
   jobs:
-
   - deployment: Apply
+
+    displayName: Terraform Apply
 
     environment: Production
 
+    pool:
+      vmImage: ubuntu-latest
+
     strategy:
-
       runOnce:
-
         deploy:
-
-          pool:
-            vmImage: ubuntu-latest
-
-          variables:
-            terraformVersion: '1.14.0'
 
           steps:
 
           - checkout: self
 
-          - download: current
-            artifact: tfplan
+          - task: DownloadPipelineArtifact@2
+            displayName: Download Terraform Plan
+            inputs:
+              artifact: tfplan
+              path: .
 
           - task: TerraformInstaller@1
+            displayName: Install Terraform
             inputs:
-              terraformVersion: $(terraformVersion)
+              terraformVersion: '1.14.0'
 
           - task: AzureCLI@2
+            displayName: Terraform Apply
             inputs:
               azureSubscription: Azure-Service-Connection
               scriptType: bash

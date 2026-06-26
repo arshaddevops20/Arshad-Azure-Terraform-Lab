@@ -1,5 +1,6 @@
 stages:
 - stage: Validate
+  displayName: "Terraform Validate"
 
   jobs:
   - job: Validate
@@ -7,16 +8,17 @@ stages:
     pool:
       vmImage: ubuntu-latest
 
-    variables:
-      terraformVersion: '1.14.0'
-
     steps:
 
     - checkout: self
 
     - task: TerraformInstaller@1
+      displayName: Install Terraform
       inputs:
-        terraformVersion: $(terraformVersion)
+        terraformVersion: '1.14.0'
+
+    - script: terraform version
+      displayName: Terraform Version
 
     - script: terraform fmt -check -recursive
       displayName: Terraform Format Check

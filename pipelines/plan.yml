@@ -1,27 +1,26 @@
 stages:
 - stage: Plan
+  displayName: "Terraform Plan"
 
   dependsOn: Validate
 
   jobs:
-
   - job: Plan
 
     pool:
       vmImage: ubuntu-latest
-
-    variables:
-      terraformVersion: '1.14.0'
 
     steps:
 
     - checkout: self
 
     - task: TerraformInstaller@1
+      displayName: Install Terraform
       inputs:
-        terraformVersion: $(terraformVersion)
+        terraformVersion: '1.14.0'
 
     - task: AzureCLI@2
+      displayName: Terraform Plan
       inputs:
         azureSubscription: Azure-Service-Connection
         scriptType: bash
@@ -30,5 +29,8 @@ stages:
           terraform init
           terraform plan -out=tfplan
 
-    - publish: tfplan
-      artifact: tfplan
+    - task: PublishPipelineArtifact@1
+      displayName: Publish Terraform Plan
+      inputs:
+        targetPath: tfplan
+        artifact: tfplan
