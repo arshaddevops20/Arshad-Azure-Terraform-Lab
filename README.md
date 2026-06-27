@@ -79,6 +79,8 @@ Arshad-Azure-Terraform-Lab/
 │   ├── bastion/
 │   └── loadbalancer/
 │
+├── azure-destroy-pipelines.yml
+├── azure-pipelines.yml
 ├── provider.tf
 ├── variables.tf
 ├── main.tf
